@@ -37,5 +37,7 @@ public class Task {
     public void setDefaults() {
         if (status == null)
             status = TaskStatus.TODO;
+        if (description == null)
+            description = "";
     }
 }
