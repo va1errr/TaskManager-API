@@ -19,6 +19,13 @@ target/
 *.iml
 *.ipr
 
+### OS files ###
+.DS_Store
+
+### Logs ###
+logs/
+*.log
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,3 +38,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment files ###
+.env
+.*.secret
