@@ -1,5 +1,7 @@
 package com.va1err.TaskManager.services;
 
+import com.va1err.TaskManager.dto.CreateTaskRequest;
+import com.va1err.TaskManager.dto.TaskResponse;
 import com.va1err.TaskManager.exceptions.TaskNotFoundException;
 import com.va1err.TaskManager.models.Task;
 import com.va1err.TaskManager.repositories.TaskRepository;
@@ -16,16 +18,28 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public TaskResponse createTask(CreateTaskRequest request) {
+        Task task = new Task();
+
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setStatus(request.getStatus());
+
+        taskRepository.save(task);
+
+        return TaskResponse.fromTask(task);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<TaskResponse> getAllTasks() {
+        return taskRepository.findAll()
+                .stream()
+                .map(TaskResponse::fromTask)
+                .toList();
     }
 
-    public Task getTask(Long id) {
+    public TaskResponse getTask(Long id) {
         return taskRepository.findById(id)
+                .map(TaskResponse::fromTask)
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
@@ -36,15 +50,17 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public Task updateTask(Long id, Task task) {
-        Task existingTask = taskRepository.findById(id)
+    public TaskResponse updateTask(Long id, CreateTaskRequest request) {
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
-        existingTask.setTitle(task.getTitle());
-        existingTask.setDescription(task.getDescription());
-        existingTask.setStatus(task.getStatus());
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setStatus(request.getStatus());
 
-        return taskRepository.save(existingTask);
+        taskRepository.save(task);
+
+        return TaskResponse.fromTask(task);
     }
 
 }
