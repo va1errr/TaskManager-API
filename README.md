@@ -7,10 +7,12 @@ A simple RESTful Task Manager application built with **Spring Boot** and **Java 
 - Create, read, update, and delete tasks
 - Clean architecture with DTO layer
 - Task status tracking (TODO, IN_PROGRESS, DONE)
-- Input validation with Bean Validation
-- Proper exception handling (custom exceptions and global handler)
-- Auto-generated timestamps for task creation
+- Pagination and sorting support
+- Filtering by task status
+- Unified API response structure
+- Global exception handling with consistent error format
 - In-memory H2 database for easy testing
+- Swagger UI for interactive API documentation
 
 ## Tech Stack
 
@@ -32,6 +34,34 @@ A simple RESTful Task Manager application built with **Spring Boot** and **Java 
 5. **Entity** → Domain model
 6. **Repository** → Data access layer
 7. **Database** → Persistence storage
+
+## API design
+
+### Success response
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "message": "<Relevant Message>",
+  "data": ["<Relevant data>"],
+  "timestamp": "<Timestamp>"
+}
+```
+
+### Error response
+```json
+  "status": "<Relevant status code>"
+  "success": false,
+  "message": "<Relevant Message>",
+  "details": ["<Relevant information about an error>"],
+  "timestamp": "<Timestamp>"
+```
+
+## API documentation
+
+Swagger UI is available for testing and exploring endpoints: \
+http://localhost:8080/swagger-ui/index.html
 
 ## Getting Started
 
