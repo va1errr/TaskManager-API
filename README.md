@@ -11,8 +11,15 @@ A simple RESTful Task Manager application built with **Spring Boot** and **Java 
 - Filtering by task status
 - Unified API response structure
 - Global exception handling with consistent error format
-- In-memory H2 database for easy testing
+- In-memory H2 database with preloaded schema and sample data for easy testing
 - Swagger UI for interactive API documentation
+
+## Database Initialization
+
+This application uses in-memory H2 database with automatic schema generation and data seeding. \
+On startup:
+- Hibernate creates the database schema
+- `data.sql` is executed to preload sample tasks
 
 ## Tech Stack
 
@@ -51,7 +58,7 @@ A simple RESTful Task Manager application built with **Spring Boot** and **Java 
 
 ### Error response
 ```json
-  "status": "<Relevant status code>"
+  "status": "<Relevant status code>",
   "success": false,
   "message": "<Relevant Message>",
   "details": ["<Relevant information about an error>"],
