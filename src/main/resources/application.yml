@@ -7,8 +7,11 @@ spring.datasource:
   driverClassName:
     org.h2.Driver
 
-spring.jpa.hibernate.ddl-auto:
-  update
+spring.jpa:
+  hibernate.ddl-auto:
+    update
+  defer-datasource-initialization:
+    true
 
 spring.h2.console.enabled:
   true
