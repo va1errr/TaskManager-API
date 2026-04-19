@@ -11,15 +11,16 @@ A simple RESTful Task Manager application built with **Spring Boot** and **Java 
 - Filtering by task status
 - Unified API response structure
 - Global exception handling with consistent error format
-- In-memory H2 database with preloaded schema and sample data for easy testing
+- PostgreSQL persistence with versioned schema migrations via Flyway
 - Swagger UI for interactive API documentation
 
 ## Database Initialization
 
-This application uses in-memory H2 database with automatic schema generation and data seeding. \
+This application uses PostgreSQL with Flyway-managed migrations.
+
 On startup:
-- Hibernate creates the database schema
-- `data.sql` is executed to preload sample tasks
+- Flyway applies SQL migrations from `src/main/resources/db/migration`
+- Hibernate validates entity mappings against the migrated schema (`ddl-auto=validate`)
 
 ## Tech Stack
 
@@ -27,7 +28,8 @@ On startup:
 - **Spring Boot 4.0.5**
 - **Spring Web**
 - **Spring Data JPA**
-- **H2 Database**
+- **PostgreSQL**
+- **Flyway**
 - **Lombok**
 - **Maven**
 - **Jakarta Validation**
@@ -75,27 +77,39 @@ http://localhost:8080/swagger-ui/index.html
 ### Prerequisites
 
 - Java 25 or higher
-- Maven
+- PostgreSQL 15+ running locally
 
 ### Running the Application
 
 ```bash
-# Build the project
+# 1) Create database (once)
+createdb -h localhost -U '<username>' task_manager
+
+# 2) Build
 ./mvnw clean install
 
-# Run the application
+# 3) Run the application
 ./mvnw spring-boot:run
 ```
 
 The application will start on `http://localhost:8080`.
 
-### H2 Console
+Database connection is configured in `src/main/resources/application.properties`:
 
-Access the H2 database console at `http://localhost:8080/h2-console` with the following settings:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/task_manager
+spring.datasource.username=va1err
+spring.datasource.password=postgres
+```
 
-- **JDBC URL:** `jdbc:h2:mem:testdb`
-- **Username:** `sa`
-- **Password:** (leave blank)
+If Flyway reports `Found non-empty schema(s) "public" but no schema history table`, use a clean schema in dev:
+
+```sql
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO va1err;
+GRANT ALL ON SCHEMA public TO public;
+```
 
 ## API Endpoints
 
