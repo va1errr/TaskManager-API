@@ -30,4 +30,16 @@ public class TaskResponse {
                 .build();
     }
 
+    public static Task toTask(TaskResponse response) {
+        if (response == null) return null;
+
+        Task task = new Task();
+        task.setId(response.getId());
+        task.setTitle(response.getTitle());
+        task.setDescription(response.getDescription());
+        task.setStatus(response.getStatus());
+
+        return task;
+    }
+
 }

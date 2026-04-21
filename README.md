@@ -11,8 +11,10 @@ A simple RESTful Task Manager application built with **Spring Boot** and **Java 
 - Filtering by task status
 - Unified API response structure
 - Global exception handling with consistent error format
+- 9 Unit Tests and 7 Integration Tests
 - PostgreSQL persistence with versioned schema migrations via Flyway
 - Swagger UI for interactive API documentation
+- Docker container for DB
 
 ## Database Initialization
 
@@ -33,6 +35,7 @@ On startup:
 - **Lombok**
 - **Maven**
 - **Jakarta Validation**
+- **Docker**
 
 ## Architecture
 
@@ -78,29 +81,36 @@ http://localhost:8080/swagger-ui/index.html
 
 - Java 25 or higher
 - PostgreSQL 15+ running locally
+- Docker
+
+### Setting and configuring the environment variables
+Copy the `.env.example` to `.env` and edit.
+```.properties
+POSTGRES_PORT=5432      #Set to free port for listening
+POSTGRES_DB=task_manager      #Set to exisiting data base name
+POSTGRES_USER=postgres      #Set to postgres username
+POSTGRES_PASSWORD=postgres      #Set to postgres username password
+```
+
+Export environment variables to Spring Application.
 
 ### Running the Application
 
 ```bash
-# 1) Create database (once)
-createdb -h localhost -U '<username>' task_manager
+# 1) Run the postgres docker container
+docker-compose up -d
 
-# 2) Build
+# 2) Verify it's running
+docker ps
+
+# 3) Build and run the application
 ./mvnw clean install
-
-# 3) Run the application
 ./mvnw spring-boot:run
 ```
 
 The application will start on `http://localhost:8080`.
 
 Database connection is configured in `src/main/resources/application.properties`:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/task_manager
-spring.datasource.username=va1err
-spring.datasource.password=postgres
-```
 
 If Flyway reports `Found non-empty schema(s) "public" but no schema history table`, use a clean schema in dev:
 
@@ -143,8 +153,7 @@ src/main/java/com/va1err/TaskManager/
 ├── models/          # JPA entities
 ├── dto/             # Data transfer objects
 ├── enums/           # Enumerations
-├── exceptions/      # Custom exception handlers
-└── config/          # Application configuration
+└── exceptions/      # Custom exception handlers
 ```
 
 ## License

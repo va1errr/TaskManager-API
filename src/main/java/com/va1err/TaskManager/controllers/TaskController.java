@@ -59,7 +59,7 @@ public class TaskController {
 
     @Operation(summary = "Update task by id")
     @PutMapping("/{id}")
-    public ApiResponse<TaskResponse> updateTask(@PathVariable Long id, @RequestBody CreateTaskRequest request) {
+    public ApiResponse<TaskResponse> updateTask(@PathVariable Long id, @RequestBody @Valid CreateTaskRequest request) {
         TaskResponse task = taskService.updateTask(id, request);
 
         return ApiResponseUtil.success(task, "Task found and updated");

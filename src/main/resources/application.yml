@@ -1,0 +1,15 @@
+spring.application.name:
+  TaskManager
+
+spring.datasource:
+  url: jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+
+spring.jpa.hibernate.ddl-auto:
+  validate
+spring.jpa.show-sql:
+  true
+
+spring.flyway.enabled:
+  true
